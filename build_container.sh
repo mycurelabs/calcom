@@ -32,8 +32,9 @@ echo "Building image: ${CONTAINER_IMAGE} for ${BUILD_PLATFORMS}..."
 # docker-buildx use multiplatform-builder
 # docker-buildx inspect --bootstrap
 
-docker-buildx build \
-  --platform ${BUILD_PLATFORMS} \
+# docker-buildx build \
+#   --platform ${BUILD_PLATFORMS} \
+docker build \
   --network host \
   --build-arg DATABASE_URL=${DATABASE_URL} \
   -t ${CONTAINER_IMAGE} \
