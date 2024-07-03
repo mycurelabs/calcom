@@ -1,3 +1,12 @@
+## Secret generator
+
+NOTE: follow the ff generator for the secrets as there is an error when CALENDSO_ENCRYPTION_KEY is generated as documented
+
+```sh
+NEXTAUTH_SECRET=$(openssl rand -base64 32)
+CALENDSO_ENCRYPTION_KEY=$(openssl rand -base64 24)
+```
+
 ## Docker build
 
 Requires:
