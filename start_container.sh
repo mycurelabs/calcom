@@ -1,25 +1,20 @@
 #! /bin/bash
 
 # require the following environment variables
-# - CONTAINER_IMAGE
-# - NEXT_PUBLIC_WEBAPP_URL (default: http://localhost:3000)
-# - NEXTAUTH_SECRET
 # - CALENDSO_ENCRYPTION_KEY
-# - DATABASE_HOST (default: localhost:5432)
-# - DATABASE_URL
-# - DATABASE_DIRECT_URL (default to $DATABASE_URL)
 
-if [ -z "$CONTAINER_IMAGE" ]; then
-  echo "CONTAINER_IMAGE is required"
-  exit 1
-fi
-if [ -z "$NEXTAUTH_SECRET" ]; then
-  echo "NEXTAUTH_SECRET is required"
-  exit 1
-fi
 if [ -z "$CALENDSO_ENCRYPTION_KEY" ]; then
   echo "CALENDSO_ENCRYPTION_KEY is required"
   exit 1
+fi
+if [ -z "$NEXTAUTH_SECRET" ]; then
+  NEXTAUTH_SECRET=${CALENDSO_ENCRYPTION_KEY}
+fi
+if [ -z "$NEXT_PUBLIC_WEBAPP_URL" ]; then
+  NEXT_PUBLIC_WEBAPP_URL="http://localhost:3000"
+fi
+if [ -z "$CONTAINER_IMAGE" ]; then
+  CONTAINER_IMAGE=ghcr.io/mycurelabs/calcom
 fi
 if [ -z "$POSTGRES_USER" ]; then
   POSTGRES_USER=admin
@@ -35,9 +30,6 @@ if [ -z "$DATABASE_HOST" ]; then
 fi
 if [ -z "$DATABASE_URL" ]; then
   DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
-fi
-if [ -z "$NEXT_PUBLIC_WEBAPP_URL" ]; then
-  NEXT_PUBLIC_WEBAPP_URL="http://localhost:3000"
 fi
 if [ -z "$DATABASE_DIRECT_URL" ]; then
   DATABASE_DIRECT_URL=$DATABASE_URL

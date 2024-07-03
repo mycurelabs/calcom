@@ -1,12 +1,7 @@
 #! /bin/bash
 
-# require the following environment variables
-# - CONTAINER_IMAGE
-# - DATABASE_URL
-
 if [ -z "$CONTAINER_IMAGE" ]; then
-  echo "CONTAINER_IMAGE is required"
-  exit 1
+  CONTAINER_IMAGE=ghcr.io/mycurelabs/calcom
 fi
 if [ -z "$POSTGRES_USER" ]; then
   POSTGRES_USER=admin
