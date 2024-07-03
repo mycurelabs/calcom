@@ -13,9 +13,6 @@ if [ -z "$CONTAINER_IMAGE" ]; then
   echo "CONTAINER_IMAGE is required"
   exit 1
 fi
-if [ -z "$NEXT_PUBLIC_WEBAPP_URL" ]; then
-  NEXT_PUBLIC_WEBAPP_URL="http://localhost:3000"
-fi
 if [ -z "$NEXTAUTH_SECRET" ]; then
   echo "NEXTAUTH_SECRET is required"
   exit 1
@@ -24,12 +21,23 @@ if [ -z "$CALENDSO_ENCRYPTION_KEY" ]; then
   echo "CALENDSO_ENCRYPTION_KEY is required"
   exit 1
 fi
+if [ -z "$POSTGRES_USER" ]; then
+  POSTGRES_USER=admin
+fi
+if [ -z "$POSTGRES_PASSWORD" ]; then
+  POSTGRES_PASSWORD=admin
+fi
+if [ -z "$POSTGRES_DB" ]; then
+  POSTGRES_DB=calcom
+fi
 if [ -z "$DATABASE_HOST" ]; then
-  DATABASE_HOST="localhost:5432"
+  DATABASE_HOST=localhost:5432
 fi
 if [ -z "$DATABASE_URL" ]; then
-  echo "DATABASE_URL is required"
-  exit 1
+  DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
+fi
+if [ -z "$NEXT_PUBLIC_WEBAPP_URL" ]; then
+  NEXT_PUBLIC_WEBAPP_URL="http://localhost:3000"
 fi
 if [ -z "$DATABASE_DIRECT_URL" ]; then
   DATABASE_DIRECT_URL=$DATABASE_URL

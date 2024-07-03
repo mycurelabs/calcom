@@ -8,9 +8,20 @@ if [ -z "$CONTAINER_IMAGE" ]; then
   echo "CONTAINER_IMAGE is required"
   exit 1
 fi
+if [ -z "$POSTGRES_USER" ]; then
+  POSTGRES_USER=admin
+fi
+if [ -z "$POSTGRES_PASSWORD" ]; then
+  POSTGRES_PASSWORD=admin
+fi
+if [ -z "$POSTGRES_DB" ]; then
+  POSTGRES_DB=calcom
+fi
+if [ -z "$DATABASE_HOST" ]; then
+  DATABASE_HOST=localhost:5432
+fi
 if [ -z "$DATABASE_URL" ]; then
-  echo "DATABASE_URL is required"
-  exit 1
+  DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}/${POSTGRES_DB}
 fi
 
 # BUILD_PLATFORMS="linux/amd64,linux/arm64"
