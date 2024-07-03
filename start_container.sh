@@ -1,0 +1,53 @@
+#! /bin/bash
+
+# require the following environment variables
+# - CONTAINER_IMAGE
+# - NEXT_PUBLIC_WEBAPP_URL (default: http://localhost:3000)
+# - NEXTAUTH_SECRET
+# - CALENDSO_ENCRYPTION_KEY
+# - DATABASE_HOST (default: localhost:5432)
+# - DATABASE_URL
+# - DATABASE_DIRECT_URL (default to $DATABASE_URL)
+
+if [ -z "$CONTAINER_IMAGE" ]; then
+  echo "CONTAINER_IMAGE is required"
+  exit 1
+fi
+if [ -z "$NEXT_PUBLIC_WEBAPP_URL" ]; then
+  NEXT_PUBLIC_WEBAPP_URL="http://localhost:3000"
+fi
+if [ -z "$NEXTAUTH_SECRET" ]; then
+  echo "NEXTAUTH_SECRET is required"
+  exit 1
+fi
+if [ -z "$CALENDSO_ENCRYPTION_KEY" ]; then
+  echo "CALENDSO_ENCRYPTION_KEY is required"
+  exit 1
+fi
+if [ -z "$DATABASE_HOST" ]; then
+  DATABASE_HOST="localhost:5432"
+fi
+if [ -z "$DATABASE_URL" ]; then
+  echo "DATABASE_URL is required"
+  exit 1
+fi
+if [ -z "$DATABASE_DIRECT_URL" ]; then
+  DATABASE_DIRECT_URL=$DATABASE_URL
+fi
+
+echo "Starting image: ${CONTAINER_IMAGE}..."
+
+docker run \
+  --rm \
+  -it \
+  --network host \
+  -p 3000:3000 \
+  -e NEXT_PUBLIC_WEBAPP_URL=${NEXT_PUBLIC_WEBAPP_URL} \
+  -e NEXT_PUBLIC_LICENSE_CONSENT=${NEXT_PUBLIC_LICENSE_CONSENT} \
+  -e CALCOM_TELEMETRY_DISABLED=${CALCOM_TELEMETRY_DISABLED} \
+  -e NEXTAUTH_SECRET=${NEXTAUTH_SECRET} \
+  -e CALENDSO_ENCRYPTION_KEY=${CALENDSO_ENCRYPTION_KEY} \
+  -e DATABASE_HOST=${DATABASE_HOST} \
+  -e DATABASE_URL=${DATABASE_URL} \
+  -e DATABASE_DIRECT_URL=${DATABASE_DIRECT_URL} \
+  ${CONTAINER_IMAGE}
